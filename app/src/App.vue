@@ -4,36 +4,36 @@ import Field from "./components/Field.vue";
 
 function validate(values) {
   const errors = {};
-  if (values.myField !== "Toto") {
-    errors.myField = "myField doit contenir toto";
+  if (values.username !== "toto") {
+    errors.username = "Username doit contenir toto";
   }
   return errors;
+}
+
+function onSubmit(values, setSubmitting) {
+  console.log("VALIDATION PASSED !!! ", values);
+
+  setTimeout(() => {
+    console.log(JSON.stringify(values, null, 2));
+    setSubmitting(false);
+  }, 400);
 }
 </script>
 
 <template>
   <Vuemik
-    :initialValues="{ myField: 'MyExample', password: 'pwd' }"
+    :initialValues="{ username: 'johndoe', password: 'pwd' }"
     :validate="validate"
-    @submit="
-      (values) => {
-        (values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
-        };
-      }
-    "
+    @submit="onSubmit"
   >
     <template v-slot="slotProps">
       <form @submit.prevent="slotProps.handleSubmit">
         <ul v-for="(v, k) in slotProps.errors" :key="k">
           <li>{{ v }}</li>
         </ul>
-        <Field v-model="slotProps.values.myField" />
+        <Field v-model="slotProps.values.username" />
         <Field v-model="slotProps.values.password" />
-        <button type="submit">Submit</button>
+        <button type="submit" :disabled="slotProps.isSubmitting">Submit</button>
       </form>
     </template>
   </Vuemik>
