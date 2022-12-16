@@ -7,6 +7,9 @@ function validate(values) {
   if (values.username !== "toto") {
     errors.username = "Username doit contenir toto";
   }
+  if (values.password.length < 6) {
+    errors.password = "Password doit contenir plus de 6 caractères";
+  }
   return errors;
 }
 
@@ -22,17 +25,14 @@ function onSubmit(values, setSubmitting) {
 
 <template>
   <Vuemik
-    :initialValues="{ username: 'johndoe', password: 'mypassword' }"
+    :initialValues="{ username: '', password: '' }"
     :validate="validate"
     @submit="onSubmit"
   >
     <template v-slot="slotProps">
       <form @submit.prevent="slotProps.handleSubmit">
-        <ul v-for="(v, k) in slotProps.errors" :key="k">
-          <li>{{ v }}</li>
-        </ul>
-        <Field as="input" type="text" v-model="slotProps.values.username" />
-        <Field as="input" type="password" v-model="slotProps.values.password" />
+        <Field name="username" as="input" type="text" :error="slotProps.errors.username" v-model="slotProps.values.username" />
+        <Field name="password" as="input" type="password" :error="slotProps.errors.password" v-model="slotProps.values.password" />
         <button type="submit" :disabled="slotProps.isSubmitting">Submit</button>
       </form>
     </template>

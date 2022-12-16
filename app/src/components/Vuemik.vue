@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 
 const errors = reactive({});
 
@@ -38,12 +38,16 @@ function handleSubmit() {
     );
   } else {
     isSubmitting.value = false;
+    setTimeout(() => {
+      for (const key in validationErrors) {
+        errors[key] = "";
+      }
+    }, 3000);
   }
 }
 </script>
 
 <template>
-  <p>Form</p>
   <slot
     :handleSubmit="handleSubmit"
     :values="values"
