@@ -1,15 +1,42 @@
-<script setup></script>
+<script setup>
+import Vuemik from "./components/Vuemik.vue";
+import Field from "./components/Field.vue";
+
+function validate(values) {
+  const errors = {};
+  if (values.myField !== "Toto") {
+    errors.myField = "myField doit contenir toto";
+  }
+  return errors;
+}
+</script>
 
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="./assets/logo.svg"
-      width="125"
-      height="125"
-    />
-  </header>
+  <Vuemik
+    :initialValues="{ myField: 'MyExample', password: 'pwd' }"
+    :validate="validate"
+    @submit="
+      (values) => {
+        (values, { setSubmitting }) => {
+          setTimeout(() => {
+            alert(JSON.stringify(values, null, 2));
+            setSubmitting(false);
+          }, 400);
+        };
+      }
+    "
+  >
+    <template v-slot="slotProps">
+      <form @submit.prevent="slotProps.handleSubmit">
+        <ul v-for="(v, k) in slotProps.errors" :key="k">
+          <li>{{ v }}</li>
+        </ul>
+        <Field v-model="slotProps.values.myField" />
+        <Field v-model="slotProps.values.password" />
+        <button type="submit">Submit</button>
+      </form>
+    </template>
+  </Vuemik>
 </template>
 
 <style scoped>
