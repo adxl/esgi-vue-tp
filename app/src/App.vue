@@ -22,7 +22,7 @@ function onSubmit(values, setSubmitting) {
 
 <template>
   <Vuemik
-    :initialValues="{ username: 'johndoe', password: 'pwd' }"
+    :initialValues="{ username: 'johndoe', password: 'mypassword' }"
     :validate="validate"
     @submit="onSubmit"
   >
@@ -31,8 +31,8 @@ function onSubmit(values, setSubmitting) {
         <ul v-for="(v, k) in slotProps.errors" :key="k">
           <li>{{ v }}</li>
         </ul>
-        <Field v-model="slotProps.values.username" />
-        <Field v-model="slotProps.values.password" />
+        <Field as="input" type="text" v-model="slotProps.values.username" />
+        <Field as="input" type="password" v-model="slotProps.values.password" />
         <button type="submit" :disabled="slotProps.isSubmitting">Submit</button>
       </form>
     </template>

@@ -1,13 +1,13 @@
 <script setup>
-defineProps(["modelValue"]);
+defineProps(["modelValue", "as"]);
 </script>
 
 <template>
-  <input
-    type="text"
+  <component
+    :is="as"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
-  />
+  ></component>
 </template>
 
 <style scoped></style>
